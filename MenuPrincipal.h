@@ -5,9 +5,10 @@ class MenuPrincipal : public Pantalla {
 private:
     Font fuente;
     Text titulo;
-    RectangleShape botonJugar;
-    Text textoBotonJugar;
-
+    Text txtJugar;
+    Text txtSalir;
+    RectangleShape btnJugar;
+    RectangleShape btnSalir;
 public:
     MenuPrincipal();
     TipoPantalla procesarEvento(const Event& evento, const RenderWindow& ventana) override;

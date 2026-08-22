@@ -1,12 +1,12 @@
 #pragma once
-#include "Bloque.h"
+#include "FilaBloques.h"
 
 class ListaEnlazada {
 private:
     struct Nodo {
-        Bloque* dato;
+        FilaBloques* dato;
         Nodo* siguiente;
-        Nodo(Bloque* val) : dato(val), siguiente(nullptr) {}
+        Nodo(FilaBloques* val) : dato(val), siguiente(nullptr) {}
     };
 
     Nodo* cabeza;
@@ -16,11 +16,11 @@ public:
     ListaEnlazada();
     ~ListaEnlazada();
 
-    void insertarInicio(Bloque* valor);
-    void insertarFinal(Bloque* valor);
+    void insertarInicio(FilaBloques* v);
+    void insertarFinal(FilaBloques* v);
     void eliminarInicio();
-    void eliminarEn(int indice);
-    Bloque* obtenerEn(int indice) const;
+    void eliminarEn(int x);
+    FilaBloques* obtenerEn(int x) const;
     int tamano() const;
     bool estaVacia() const;
     void limpiar();

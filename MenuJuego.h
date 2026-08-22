@@ -2,10 +2,7 @@
 #include "Pantalla.h"
 class MenuJuego : public Pantalla {
 private:
-    Font fuente;
-    Text titulo;
-    RectangleShape botonJugar;
-    Text textoBotonJugar;
+    
 
 public:
     MenuJuego();

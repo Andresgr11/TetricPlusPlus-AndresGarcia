@@ -1,6 +1,9 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <iostream>
+#include <string>
 
+using namespace std;
 using namespace sf;
 
 enum class TipoPantalla {
@@ -9,7 +12,8 @@ enum class TipoPantalla {
     Juego,
     GameOver,
     Replay,
-    Puntajes
+    Puntajes,
+    Salir
 };
 
 class Pantalla {

@@ -160,13 +160,17 @@
     <ClCompile Include="BloqueT.cpp" />
     <ClCompile Include="BloqueZ.cpp" />
     <ClCompile Include="Cola.cpp" />
+    <ClCompile Include="FilaBloques.cpp" />
+    <ClCompile Include="FinPartida.cpp" />
     <ClCompile Include="ListaDoble.cpp" />
     <ClCompile Include="ListaEnlazada.cpp" />
     <ClCompile Include="MenuJuego.cpp" />
     <ClCompile Include="MenuPrincipal.cpp" />
+    <ClCompile Include="MenuPuntajes.cpp" />
     <ClCompile Include="Pantalla.cpp" />
     <ClCompile Include="Pila.cpp" />
-    <ClCompile Include="TetricPlusPlus-AndresGarcia.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Repeticion.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bloque.h" />
@@ -178,12 +182,16 @@
     <ClInclude Include="BloqueT.h" />
     <ClInclude Include="BloqueZ.h" />
     <ClInclude Include="Cola.h" />
+    <ClInclude Include="FilaBloques.h" />
+    <ClInclude Include="FinPartida.h" />
     <ClInclude Include="ListaDoble.h" />
     <ClInclude Include="ListaEnlazada.h" />
     <ClInclude Include="MenuJuego.h" />
     <ClInclude Include="MenuPrincipal.h" />
+    <ClInclude Include="MenuPuntajes.h" />
     <ClInclude Include="Pantalla.h" />
     <ClInclude Include="Pila.h" />
+    <ClInclude Include="Repeticion.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

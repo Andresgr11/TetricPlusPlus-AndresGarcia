@@ -9,24 +9,24 @@ ListaEnlazada::~ListaEnlazada() {
     limpiar();
 }
 
-void ListaEnlazada::insertarInicio(Bloque* valor) {
-    Nodo* nuevoNodo = new Nodo(valor);
-    nuevoNodo->siguiente = cabeza;
-    cabeza = nuevoNodo;
+void ListaEnlazada::insertarInicio(FilaBloques* v) {
+    Nodo* nuevo = new Nodo(v);
+    nuevo->siguiente = cabeza;
+    cabeza = nuevo;
     tamanoActual++;
 }
 
-void ListaEnlazada::insertarFinal(Bloque* valor) {
-    Nodo* nuevoNodo = new Nodo(valor);
+void ListaEnlazada::insertarFinal(FilaBloques* v) {
+    Nodo* nuevo = new Nodo(v);
     if (estaVacia()) {
-        cabeza = nuevoNodo;
+        cabeza = nuevo;
     }
     else {
         Nodo* actual = cabeza;
         while (actual->siguiente != nullptr) {
             actual = actual->siguiente;
         }
-        actual->siguiente = nuevoNodo;
+        actual->siguiente = nuevo;
     }
     tamanoActual++;
 }
@@ -36,40 +36,42 @@ void ListaEnlazada::eliminarInicio() {
         cout << "Error: La lista esta vacia." << endl;
         return;
     }
-    Nodo* temporal = cabeza;
+    Nodo* temp = cabeza;
     cabeza = cabeza->siguiente;
-    delete temporal;
+    delete temp->dato;
+    delete temp;
     tamanoActual--;
 }
 
-void ListaEnlazada::eliminarEn(int indice) {
-    if (indice < 0 || indice >= tamanoActual) {
+void ListaEnlazada::eliminarEn(int x) {
+    if (x < 0 || x >= tamanoActual) {
         cout << "Error: Indice fuera de rango." << endl;
         return;
     }
-    if (indice == 0) {
+    if (x == 0) {
         eliminarInicio();
         return;
     }
 
     Nodo* actual = cabeza;
-    for (int i = 0; i < indice - 1; ++i) {
+    for (int i = 0; i < x - 1; ++i) {
         actual = actual->siguiente;
     }
 
-    Nodo* aEliminar = actual->siguiente;
-    actual->siguiente = aEliminar->siguiente;
-    delete aEliminar;
+    Nodo* eliminar = actual->siguiente;
+    actual->siguiente = eliminar->siguiente;
+    delete eliminar->dato;
+    delete eliminar;
     tamanoActual--;
 }
 
-Bloque* ListaEnlazada::obtenerEn(int indice) const {
-    if (indice < 0 || indice >= tamanoActual) {
+FilaBloques* ListaEnlazada::obtenerEn(int x) const {
+    if (x < 0 || x >= tamanoActual) {
         cout << "Error: Indice fuera de rango." << endl;
         return nullptr;
     }
     Nodo* actual = cabeza;
-    for (int i = 0; i < indice; ++i) {
+    for (int i = 0; i < x; ++i) {
         actual = actual->siguiente;
     }
     return actual->dato;

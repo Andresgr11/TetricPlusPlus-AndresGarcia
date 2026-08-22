@@ -9,8 +9,8 @@ Pila::~Pila() {
     limpiar();
 }
 
-void Pila::apilar(Bloque* valor) {
-    Nodo* nuevoNodo = new Nodo(valor);
+void Pila::apilar(Bloque* v) {
+    Nodo* nuevoNodo = new Nodo(v);
     nuevoNodo->siguiente = topeNodo;
     topeNodo = nuevoNodo;
     tamanoActual++;

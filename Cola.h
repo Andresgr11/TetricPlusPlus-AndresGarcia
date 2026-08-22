@@ -17,11 +17,11 @@ public:
     Cola();
     ~Cola();
 
-    void encolar(Bloque* valor);
+    void encolar(Bloque* v);
     void desencolar();
     Bloque* frente() const;
     bool estaVacia() const;
     int tamano() const;
     void limpiar();
-    Bloque* verEn(int indice) const;
+    Bloque* verEn(int x) const;
 };

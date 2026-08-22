@@ -19,7 +19,7 @@ public:
     ListaDoble();
     ~ListaDoble();
 
-    void agregarMovimiento(Bloque* valor);
+    void agregarMovimiento(Bloque* v);
     bool puedeDeshacer() const;
     bool puedeRehacer() const;
     Bloque* deshacer();

@@ -9,8 +9,8 @@ Cola::~Cola() {
     limpiar();
 }
 
-void Cola::encolar(Bloque* valor) {
-    Nodo* nuevoNodo = new Nodo(valor);
+void Cola::encolar(Bloque* v) {
+    Nodo* nuevoNodo = new Nodo(v);
     if (estaVacia()) {
         frenteNodo = atrasNodo = nuevoNodo;
     }
@@ -58,13 +58,13 @@ void Cola::limpiar() {
     }
 }
 
-Bloque* Cola::verEn(int indice) const {
-    if (indice < 0 || indice >= tamanoActual) {
+Bloque* Cola::verEn(int x) const {
+    if (x < 0 || x >= tamanoActual) {
         cout << "Error: Indice fuera de rango en la cola." << endl;
         return nullptr;
     }
     Nodo* actual = frenteNodo;
-    for (int i = 0; i < indice; ++i) {
+    for (int i = 0; i < x; ++i) {
         actual = actual->siguiente;
     }
     return actual->dato;
