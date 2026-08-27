@@ -9,15 +9,15 @@
 using namespace sf;
 
 int main() {
-    RenderWindow ventana(VideoMode({ 1280, 1080 }), "Tetric++");
+    RenderWindow ventana(VideoMode({ 1080, 1280 }), "Tetric++");
     ventana.setFramerateLimit(60);
 
     Music musicaTetris;
     if (!musicaTetris.openFromFile("recursos/tetristheme.wav")) {
         return -1;
     }
-    musicaTetris.play();
-    musicaTetris.setLooping(true);
+    //musicaTetris.play();
+    //musicaTetris.setLooping(true);
 
     Pantalla* pantallaActual = nullptr;
     pantallaActual = new MenuPrincipal();

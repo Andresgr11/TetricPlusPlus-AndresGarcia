@@ -152,14 +152,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Bloque.cpp" />
-    <ClCompile Include="BloqueI.cpp" />
-    <ClCompile Include="BloqueJ.cpp" />
-    <ClCompile Include="BloqueL.cpp" />
-    <ClCompile Include="BloqueO.cpp" />
-    <ClCompile Include="BloqueS.cpp" />
-    <ClCompile Include="BloqueT.cpp" />
-    <ClCompile Include="BloqueZ.cpp" />
     <ClCompile Include="Cola.cpp" />
+    <ClCompile Include="ColaEventos.cpp" />
     <ClCompile Include="FilaBloques.cpp" />
     <ClCompile Include="FinPartida.cpp" />
     <ClCompile Include="ListaDoble.cpp" />
@@ -174,14 +168,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bloque.h" />
-    <ClInclude Include="BloqueI.h" />
-    <ClInclude Include="BloqueJ.h" />
-    <ClInclude Include="BloqueL.h" />
-    <ClInclude Include="BloqueO.h" />
-    <ClInclude Include="BloqueS.h" />
-    <ClInclude Include="BloqueT.h" />
-    <ClInclude Include="BloqueZ.h" />
     <ClInclude Include="Cola.h" />
+    <ClInclude Include="ColaEventos.h" />
     <ClInclude Include="FilaBloques.h" />
     <ClInclude Include="FinPartida.h" />
     <ClInclude Include="ListaDoble.h" />

@@ -9,7 +9,11 @@ TipoPantalla MenuJuego::procesarEvento(const Event & evento, const RenderWindow 
 }
 
 void MenuJuego::actualizar()
-{}
+{
+
+}
 
 void MenuJuego::dibujar(RenderWindow & ventana)
-{}
+{
+
+}

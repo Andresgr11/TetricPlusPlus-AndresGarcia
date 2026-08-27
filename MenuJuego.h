@@ -1,8 +1,13 @@
 #pragma once
 #include "Pantalla.h"
+#include "ListaEnlazada.h"
+#include "ListaDoble.h"
+#include "Bloque.h"
+#include "Pila.h"
+#include "Cola.h"
+
 class MenuJuego : public Pantalla {
 private:
-    
 
 public:
     MenuJuego();
