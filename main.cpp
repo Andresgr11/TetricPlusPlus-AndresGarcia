@@ -1,3 +1,5 @@
+#include <ctime>
+#include <cstdlib>
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include "MenuPrincipal.h"
@@ -9,6 +11,7 @@
 using namespace sf;
 
 int main() {
+    srand(static_cast<unsigned int>(time(nullptr)));
     RenderWindow ventana(VideoMode({ 1080, 1280 }), "Tetric++");
     ventana.setFramerateLimit(60);
 
@@ -16,8 +19,8 @@ int main() {
     if (!musicaTetris.openFromFile("recursos/tetristheme.wav")) {
         return -1;
     }
-    //musicaTetris.play();
-    //musicaTetris.setLooping(true);
+    musicaTetris.play();
+    musicaTetris.setLooping(true);
 
     Pantalla* pantallaActual = nullptr;
     pantallaActual = new MenuPrincipal();

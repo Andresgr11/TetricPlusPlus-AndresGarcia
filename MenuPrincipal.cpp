@@ -6,23 +6,23 @@ MenuPrincipal::MenuPrincipal() : titulo(fuente), txtJugar(fuente), txtSalir(fuen
 		cerr << "Error al cargar la fuente de texto" << endl;
 	}
     titulo.setString("Tetric++");
-    titulo.setCharacterSize(40);
-    titulo.setPosition({ 400.0f, 250.0f });
+    titulo.setCharacterSize(98);
+    titulo.setPosition({ 400.0f, 380.0f });
 
     txtJugar.setString("Jugar");
-    txtJugar.setCharacterSize(24);
-    txtJugar.setPosition({ 400.0f, 400.0f });
+    txtJugar.setCharacterSize(48);
+    txtJugar.setPosition({ 480.0f, 550.0f });
 
     txtSalir.setString("Salir");
-    txtSalir.setCharacterSize(24);
-    txtSalir.setPosition({ 400.0f, 500.0f });
+    txtSalir.setCharacterSize(48);
+    txtSalir.setPosition({ 480.0f, 650.0f });
 
-    btnJugar.setSize({ 200.0f, 50.0f });
-    btnJugar.setPosition({ 380.0f, 395.0f });
+    btnJugar.setSize({ 250.0f, 70.0f });
+    btnJugar.setPosition({ 410.0f, 545.0f });
     btnJugar.setFillColor(Color::Blue);
 
-    btnSalir.setSize({ 200.0f, 50.0f });
-    btnSalir.setPosition({ 380.0f, 495.0f });
+    btnSalir.setSize({ 250.0f, 70.0f });
+    btnSalir.setPosition({ 410.0f, 645.0f });
     btnSalir.setFillColor(Color::Red);
 }
 

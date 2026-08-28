@@ -15,7 +15,6 @@ private:
 public:
     ListaEnlazada();
     ~ListaEnlazada();
-
     void insertarInicio(FilaBloques* v);
     void insertarFinal(FilaBloques* v);
     void eliminarInicio();

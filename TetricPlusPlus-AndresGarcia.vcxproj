@@ -152,6 +152,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Bloque.cpp" />
+    <ClCompile Include="Bolsa.cpp" />
     <ClCompile Include="Cola.cpp" />
     <ClCompile Include="ColaEventos.cpp" />
     <ClCompile Include="FilaBloques.cpp" />
@@ -168,6 +169,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bloque.h" />
+    <ClInclude Include="Bolsa.h" />
     <ClInclude Include="Cola.h" />
     <ClInclude Include="ColaEventos.h" />
     <ClInclude Include="FilaBloques.h" />

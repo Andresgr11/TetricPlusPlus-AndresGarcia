@@ -5,6 +5,7 @@ class ColaEventos : public Cola<ColaEventos>
 private:
 
 public:
-
+	ColaEventos();
+	~ColaEventos();
 };
 

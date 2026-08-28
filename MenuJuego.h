@@ -5,10 +5,18 @@
 #include "Bloque.h"
 #include "Pila.h"
 #include "Cola.h"
+#include "Bolsa.h"
 
 class MenuJuego : public Pantalla {
 private:
-
+    ListaEnlazada tablero;
+    Texture fondo;
+    Sprite* fondoSprite;
+    int puntos;
+    Font fuente;
+    Text puntaje;
+    Text enEspera;
+    Text siguientePieza;
 public:
     MenuJuego();
     TipoPantalla procesarEvento(const Event& evento, const RenderWindow& ventana) override;
