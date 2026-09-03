@@ -11,6 +11,10 @@ struct FilaBloques {
     }
 
     ~FilaBloques() {
+        limpiarFila();
+    }
+
+    void limpiarFila() {
         for (int i = 0; i < 10; ++i) {
             if (columnas[i] != nullptr) {
                 delete columnas[i];

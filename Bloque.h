@@ -13,14 +13,16 @@ protected:
     Forma forma;
     Texture textura;
     Sprite* cubo;
-
+    int matrizForma[4][4];
 public:
     Bloque(Forma formaInicial, const string& rutaTextura = "recursos/bloque1.png");
     ~Bloque();
     Forma getForma() const;
     Sprite* getSprite() const;
     void setForma(Forma nuevaForma);
-    Forma aleatoria();
+    static Forma aleatoria();
     void aplicarColor();
-    void setPosicion(float x, float y);
+    void crearForma();
+    int getCelda(int fila, int col) const;
+    void dibujar(RenderWindow& ventana, float posX, float posY, float tamanoBloque = 48.0f);
 };
