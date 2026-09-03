@@ -17,9 +17,10 @@ public:
     ~Pila();
 
     void apilar(Bloque* valor);
-    void desapilar();
+    Bloque* desapilar();
     Bloque* tope() const;
     bool estaVacia() const;
     int tamano() const;
     void limpiar();
+    void dibujar(RenderWindow& ventana, float posX, float posY);
 };

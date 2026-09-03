@@ -65,11 +65,17 @@ TipoPantalla MenuJuego::procesarEvento(const Event& evento, const RenderWindow& 
         }
         else if (keyPressed->code == Keyboard::Key::Q)
         {
-
+            if (piezaEspera.estaVacia()) {
+                piezaEspera.apilar(piezaActual);
+                piezaActual = new Bloque(Bloque::aleatoria());
+            }
+            
         }
-        else if (keyPressed->code == Keyboard::Key::R)
+        else if (keyPressed->code == Keyboard::Key::E)
         {
-
+            if (!piezaEspera.estaVacia()) {             
+                piezaActual = piezaEspera.desapilar();
+            }
         }
     }
 
@@ -97,15 +103,15 @@ void MenuJuego::dibujar(RenderWindow & ventana) // Pruebas del tablero
         ventana.draw(*fondoSprite);
     }
 
-    for (int f = 0; f < tablero.tamano(); ++f) {
-        FilaBloques* fila = tablero.obtenerEn(f);
+    for (int i = 0; i < tablero.tamano(); i++) {
+        FilaBloques* fila = tablero.obtenerEn(i);
         if (fila == nullptr) continue;
 
-        for (int c = 0; c < 10; ++c) {
-            Bloque* bloqueCelda = fila->columnas[c];
+        for (int j = 0; j < 10; j++) {
+            Bloque* bloqueCelda = fila->columnas[j];
             if (bloqueCelda != nullptr) {
-                float px = posXInicial + c * tamanoBloque;
-                float py = posYInicial + f * tamanoBloque;
+                float px = posXInicial + j * tamanoBloque;
+                float py = posYInicial + i * tamanoBloque;
 
                 Sprite* sprite = bloqueCelda->getSprite();
                 if (sprite != nullptr) {
@@ -122,6 +128,7 @@ void MenuJuego::dibujar(RenderWindow & ventana) // Pruebas del tablero
         piezaActual->dibujar(ventana, px, py, tamanoBloque);
     }
 
+    piezaEspera.dibujar(ventana, 80.0f, 88.0f);
     ventana.draw(puntaje);
     ventana.draw(enEspera);
     ventana.draw(siguientePieza);
@@ -157,7 +164,7 @@ void MenuJuego::fijarPieza()
 
 void MenuJuego::limpiarFilas()
 {
-    for (int i = 0; i < tablero.tamano(); ++i) {
+    for (int i = 0; i < tablero.tamano(); i++) {
         FilaBloques* fila = tablero.obtenerEn(i);
         if (fila && fila->filaLlena()) {
             tablero.eliminarEn(i);

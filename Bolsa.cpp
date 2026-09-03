@@ -7,7 +7,7 @@ Bolsa::Bolsa() : Cola<Bloque*>(), pieza(nullptr)
 
 Bolsa::~Bolsa()
 {
-
+	limpiar();
 }
 
 void Bolsa::rellenarBolsa()

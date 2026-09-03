@@ -14,6 +14,7 @@ private:
     Sprite* fondoSprite;
     Bloque* piezaActual;
     Bolsa bolsa;
+    Pila piezaEspera;
     int piezaGridX;
     int piezaGridY;
     int puntos;

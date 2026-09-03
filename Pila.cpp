@@ -10,21 +10,26 @@ Pila::~Pila() {
 }
 
 void Pila::apilar(Bloque* v) {
-    Nodo* nuevoNodo = new Nodo(v);
-    nuevoNodo->siguiente = topeNodo;
-    topeNodo = nuevoNodo;
-    tamanoActual++;
-}
-
-void Pila::desapilar() {
     if (estaVacia()) {
-        cout << "Error: La pila esta vacia." << endl;
+        Nodo* nuevoNodo = new Nodo(v);
+        nuevoNodo->siguiente = topeNodo;
+        topeNodo = nuevoNodo;
+        tamanoActual++;
         return;
     }
+    cout << "Pila llena" << endl;
+}
+
+Bloque* Pila::desapilar() {
+    if (estaVacia()) {
+        cout << "Error: La pila esta vacia." << endl;
+    }
     Nodo* temporal = topeNodo;
+    Bloque* enviar = topeNodo->dato;
     topeNodo = topeNodo->siguiente;
-    delete temporal;
-    tamanoActual--;
+    tamanoActual--;    
+    delete temporal; 
+    return enviar;
 }
 
 Bloque* Pila::tope() const {
@@ -47,4 +52,10 @@ void Pila::limpiar() {
     while (!estaVacia()) {
         desapilar();
     }
+}
+
+void Pila::dibujar(RenderWindow& ventana, float posX, float posY)
+{
+    if (estaVacia()) return;
+    topeNodo->dato->dibujar(ventana, posX, posY);
 }

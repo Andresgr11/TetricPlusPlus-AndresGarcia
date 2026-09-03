@@ -119,10 +119,10 @@ void Bloque::dibujar(RenderWindow& ventana, float posX, float posY, float tamano
 {
     if (cubo == nullptr) return;
 
-    for (int fila = 0; fila < 4; ++fila) {
-        for (int col = 0; col < 4; ++col) {
-            if (matrizForma[fila][col] == 1) {
-                cubo->setPosition({ posX + col * tamanoBloque, posY + fila * tamanoBloque });
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            if (matrizForma[i][j] == 1) {
+                cubo->setPosition({ posX + j * tamanoBloque, posY + i * tamanoBloque });
                 ventana.draw(*cubo);
             }
         }
