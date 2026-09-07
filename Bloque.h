@@ -14,6 +14,7 @@ protected:
     Texture textura;
     Sprite* cubo;
     int matrizForma[4][4];
+    int orientacion;
 public:
     Bloque(Forma formaInicial, const string& rutaTextura = "recursos/bloque1.png");
     ~Bloque();
@@ -24,5 +25,7 @@ public:
     void aplicarColor();
     void crearForma();
     int getCelda(int fila, int col) const;
+    void rotarDerecha();
+    void rotarIzquierda();
     void dibujar(RenderWindow& ventana, float posX, float posY, float tamanoBloque = 48.0f);
 };

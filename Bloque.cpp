@@ -28,6 +28,7 @@ Sprite* Bloque::getSprite() const {
 void Bloque::setForma(Forma nuevaForma)
 {
     forma = nuevaForma;
+    orientacion = 0;
     crearForma();
     aplicarColor();
 }
@@ -63,46 +64,136 @@ void Bloque::crearForma()
 
     switch (forma) {
     case Forma::I:
-        matrizForma[0][0] = 1;
-        matrizForma[0][1] = 1;
-        matrizForma[0][2] = 1;
-        matrizForma[0][3] = 1;
+        if (orientacion == 0 || orientacion == 2) {
+            matrizForma[0][0] = 1;
+            matrizForma[0][1] = 1;
+            matrizForma[0][2] = 1;
+            matrizForma[0][3] = 1;
+        }
+        else {
+            matrizForma[0][1] = 1;
+            matrizForma[1][1] = 1;
+            matrizForma[2][1] = 1;
+            matrizForma[3][1] = 1;
+        }
         break;
+
     case Forma::J:
-        matrizForma[0][0] = 1;
-        matrizForma[1][0] = 1;
-        matrizForma[1][1] = 1;
-        matrizForma[1][2] = 1;
+        if (orientacion == 0) {
+            matrizForma[0][0] = 1;
+            matrizForma[1][0] = 1;
+            matrizForma[1][1] = 1;
+            matrizForma[1][2] = 1;
+        }
+        else if (orientacion == 1) {
+            matrizForma[0][1] = 1;
+            matrizForma[0][2] = 1;
+            matrizForma[1][1] = 1;
+            matrizForma[2][1] = 1;
+        }
+        else if (orientacion == 2) {
+            matrizForma[1][0] = 1;
+            matrizForma[1][1] = 1;
+            matrizForma[1][2] = 1;
+            matrizForma[2][2] = 1;
+        }
+        else {
+            matrizForma[0][1] = 1;
+            matrizForma[1][1] = 1;
+            matrizForma[2][0] = 1;
+            matrizForma[2][1] = 1;
+        }
         break;
+
     case Forma::L:
-        matrizForma[0][2] = 1;
-        matrizForma[1][0] = 1;
-        matrizForma[1][1] = 1;
-        matrizForma[1][2] = 1;
+        if (orientacion == 0) {
+            matrizForma[0][2] = 1;
+            matrizForma[1][0] = 1;
+            matrizForma[1][1] = 1;
+            matrizForma[1][2] = 1;
+        }
+        else if (orientacion == 1) {
+            matrizForma[0][1] = 1;
+            matrizForma[1][1] = 1;
+            matrizForma[2][1] = 1;
+            matrizForma[2][2] = 1;
+        }
+        else if (orientacion == 2) {
+            matrizForma[1][0] = 1;
+            matrizForma[1][1] = 1;
+            matrizForma[1][2] = 1;
+            matrizForma[2][0] = 1;
+        }
+        else {
+            matrizForma[0][0] = 1;
+            matrizForma[0][1] = 1;
+            matrizForma[1][1] = 1;
+            matrizForma[2][1] = 1;
+        }
         break;
+
     case Forma::O:
         matrizForma[0][1] = 1;
         matrizForma[0][2] = 1;
         matrizForma[1][1] = 1;
         matrizForma[1][2] = 1;
         break;
+
     case Forma::S:
-        matrizForma[0][1] = 1;
-        matrizForma[0][2] = 1;
-        matrizForma[1][0] = 1;
-        matrizForma[1][1] = 1;
+        if (orientacion == 0 || orientacion == 2) {
+            matrizForma[0][1] = 1;
+            matrizForma[0][2] = 1;
+            matrizForma[1][0] = 1;
+            matrizForma[1][1] = 1;
+        }
+        else {
+            matrizForma[0][1] = 1;
+            matrizForma[1][1] = 1;
+            matrizForma[1][2] = 1;
+            matrizForma[2][2] = 1;
+        }
         break;
+
     case Forma::T:
-        matrizForma[0][1] = 1;
-        matrizForma[1][0] = 1;
-        matrizForma[1][1] = 1;
-        matrizForma[1][2] = 1;
+        if (orientacion == 0) {
+            matrizForma[0][1] = 1;
+            matrizForma[1][0] = 1;
+            matrizForma[1][1] = 1;
+            matrizForma[1][2] = 1;
+        }
+        else if (orientacion == 1) {
+            matrizForma[0][1] = 1;
+            matrizForma[1][1] = 1;
+            matrizForma[1][2] = 1;
+            matrizForma[2][1] = 1;
+        }
+        else if (orientacion == 2) {
+            matrizForma[1][0] = 1;
+            matrizForma[1][1] = 1;
+            matrizForma[1][2] = 1;
+            matrizForma[2][1] = 1;
+        }
+        else {
+            matrizForma[0][1] = 1;
+            matrizForma[1][0] = 1;
+            matrizForma[1][1] = 1;
+            matrizForma[2][1] = 1;
+        }
         break;
+
     case Forma::Z:
-        matrizForma[0][0] = 1;
-        matrizForma[0][1] = 1;
-        matrizForma[1][1] = 1; 
-        matrizForma[1][2] = 1;
+        if (orientacion == 0 || orientacion == 2) {
+            matrizForma[0][0] = 1;
+            matrizForma[0][1] = 1;
+            matrizForma[1][1] = 1;
+            matrizForma[1][2] = 1;
+        }
+        else {
+            matrizForma[0][2] = 1;
+            matrizForma[1][1] = 1;
+            matrizForma[1][2] = 1;
+            matrizForma[2][1] = 1;
+        }
         break;
     }
 }
@@ -113,6 +204,16 @@ int Bloque::getCelda(int fila, int col) const
         return matrizForma[fila][col];
     }
     return 0;
+}
+
+void Bloque::rotarDerecha() {
+    orientacion = (orientacion + 1) % 4;
+    crearForma();
+}
+
+void Bloque::rotarIzquierda() {
+    orientacion = (orientacion + 3) % 4;
+    crearForma();
 }
 
 void Bloque::dibujar(RenderWindow& ventana, float posX, float posY, float tamanoBloque)

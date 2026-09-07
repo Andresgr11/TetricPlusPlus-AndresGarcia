@@ -1,7 +1,7 @@
 #include "MenuJuego.h"
 
 MenuJuego::MenuJuego() : puntaje(fuente), enEspera(fuente), siguientePieza(fuente), fondoSprite(nullptr), piezaActual(nullptr),
-puntos(0), piezaGridX(3), piezaGridY(0)
+puntos(0), piezaGridX(3), piezaGridY(0), gameOver(false)
 {
     if (!fondo.loadFromFile("recursos/tablero.png")) {
         cerr << "Error al cargar la textura." << endl;
@@ -29,8 +29,9 @@ puntos(0), piezaGridX(3), piezaGridY(0)
         FilaBloques* nuevaFila = new FilaBloques();
         tablero.insertarFinal(nuevaFila);
     }
-    piezaActual = new Bloque(Bloque::aleatoria());
+
     bolsa.rellenarBolsa();
+    piezaActual = bolsa.desencolar();
 }
 
 MenuJuego::~MenuJuego() {
@@ -40,6 +41,10 @@ MenuJuego::~MenuJuego() {
 
 TipoPantalla MenuJuego::procesarEvento(const Event& evento, const RenderWindow& ventana)
 {
+    if (gameOver) {
+        return TipoPantalla::GameOver;
+    }
+
     if (const auto* keyPressed = evento.getIf<Event::KeyPressed>())
     {
         if (keyPressed->code == Keyboard::Key::A)
@@ -67,7 +72,7 @@ TipoPantalla MenuJuego::procesarEvento(const Event& evento, const RenderWindow& 
         {
             if (piezaEspera.estaVacia()) {
                 piezaEspera.apilar(piezaActual);
-                piezaActual = new Bloque(Bloque::aleatoria());
+                piezaActual = bolsa.desencolar();
             }
             
         }
@@ -77,6 +82,24 @@ TipoPantalla MenuJuego::procesarEvento(const Event& evento, const RenderWindow& 
                 piezaActual = piezaEspera.desapilar();
             }
         }
+        else if (keyPressed->code == Keyboard::Key::Right)
+        {
+            if (piezaActual != nullptr) {
+                piezaActual->rotarDerecha();
+                if (!comprovarMovimiento(piezaGridX, piezaGridY)) {
+                    piezaActual->rotarIzquierda();
+                }
+            }
+        }
+        else if (keyPressed->code == Keyboard::Key::Left)
+        {
+            if (piezaActual != nullptr) {
+                piezaActual->rotarIzquierda();
+                if (!comprovarMovimiento(piezaGridX, piezaGridY)) {
+                    piezaActual->rotarDerecha();
+                }
+            }
+        }
     }
 
     return TipoPantalla::Ninguna;
@@ -84,6 +107,8 @@ TipoPantalla MenuJuego::procesarEvento(const Event& evento, const RenderWindow& 
 
 void MenuJuego::actualizar()
 {   
+    if (gameOver) return;
+
     tiempoAcumulado += relojCaida.restart().asSeconds();
 
     if (tiempoAcumulado >= velocidadCaida) {
@@ -94,6 +119,10 @@ void MenuJuego::actualizar()
             fijarPieza();
         }
         tiempoAcumulado = 0.0f;
+    }
+
+    if (bolsa.estaVacia()) {
+        bolsa.rellenarBolsa();
     }
 }
 
@@ -129,6 +158,8 @@ void MenuJuego::dibujar(RenderWindow & ventana) // Pruebas del tablero
     }
 
     piezaEspera.dibujar(ventana, 80.0f, 88.0f);
+    bolsa.dibujar(ventana, 805.0f, 140.0f, tamanoBloque);
+
     ventana.draw(puntaje);
     ventana.draw(enEspera);
     ventana.draw(siguientePieza);
@@ -154,12 +185,15 @@ void MenuJuego::fijarPieza()
         }
     }
 
+    limpiarFilas();
     delete piezaActual;
-    piezaActual = new Bloque(Bloque::aleatoria());
+    piezaActual = bolsa.desencolar();
     piezaGridX = 3;
     piezaGridY = 0;
 
-    limpiarFilas();
+    if (!comprovarMovimiento(piezaGridX, piezaGridY)) {
+        gameOver = true;
+    }
 }
 
 void MenuJuego::limpiarFilas()

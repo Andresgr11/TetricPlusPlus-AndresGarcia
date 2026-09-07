@@ -18,6 +18,7 @@ private:
     int piezaGridX;
     int piezaGridY;
     int puntos;
+    bool gameOver;
     Font fuente;
     Text puntaje;
     Text enEspera;

@@ -4,10 +4,10 @@
 class Bolsa : public Cola<Bloque*>
 {
 private:
-	Bloque* pieza;
+
 public:
 	Bolsa();
 	~Bolsa();
 	void rellenarBolsa();
-	void dibujar();
+	void dibujar(RenderWindow& ventana, float posX, float posY, float tamanoBloque);
 };

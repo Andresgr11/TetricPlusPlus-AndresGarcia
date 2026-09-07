@@ -34,12 +34,13 @@ public:
         tamanoActual++;
     }
 
-    void desencolar() {
+    T desencolar() {
         if (estaVacia()) {
             cout << "Error: La cola esta vacia." << endl;
-            return;
+            return nullptr;
         }
         Nodo* temporal = frenteNodo;
+        T dato = temporal->dato;
         frenteNodo = frenteNodo->siguiente;
         delete temporal;
         tamanoActual--;
@@ -47,6 +48,7 @@ public:
         if (frenteNodo == nullptr) {
             atrasNodo = nullptr;
         }
+        return dato;
     }
 
     T frente() const {
@@ -55,6 +57,14 @@ public:
             return nullptr;
         }
         return frenteNodo->dato;
+    }
+
+    T getFrente() {
+        return frenteNodo;
+    }
+
+    T getAtras() {
+        return atrasNodo;
     }
 
     bool estaVacia() const {
