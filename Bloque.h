@@ -1,7 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <iostream>
-#include <cstdlib>
 
 using namespace std;
 using namespace sf;
@@ -15,6 +14,7 @@ protected:
     Sprite* cubo;
     int matrizForma[4][4];
     int orientacion;
+    bool bloqueDestructor = false;
 public:
     Bloque(Forma formaInicial, const string& rutaTextura = "recursos/bloque1.png");
     ~Bloque();
@@ -28,4 +28,6 @@ public:
     void rotarDerecha();
     void rotarIzquierda();
     void dibujar(RenderWindow& ventana, float posX, float posY, float tamanoBloque = 48.0f);
+    bool getDestructor() const { return bloqueDestructor; }
+    void setDestructor(bool valor) { bloqueDestructor = valor; aplicarColor(); }
 };

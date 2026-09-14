@@ -1,7 +1,10 @@
 #include "MenuJuego.h"
+#include "EventoVelocidad.h"
+#include "EventoPuntos.h"
+#include "EventoBloque.h"
 
-MenuJuego::MenuJuego() : puntaje(fuente), enEspera(fuente), siguientePieza(fuente), fondoSprite(nullptr), piezaActual(nullptr),
-puntos(0), piezaGridX(3), piezaGridY(0), gameOver(false)
+MenuJuego::MenuJuego() : puntaje(fuente), enEspera(fuente), siguientePieza(fuente), textoEvento(fuente),
+fondoSprite(nullptr), piezaActual(nullptr), puntos(0), piezaGridX(3), piezaGridY(0), gameOver(false), velocidadCaida(0.5f)
 {
     if (!fondo.loadFromFile("recursos/tablero.png")) {
         cerr << "Error al cargar la textura." << endl;
@@ -14,7 +17,7 @@ puntos(0), piezaGridX(3), piezaGridY(0), gameOver(false)
 
     puntaje.setString("Puntaje: " + to_string(puntos));
     puntaje.setCharacterSize(64);
-    puntaje.setPosition({ 680.0f, 740.0f });
+    puntaje.setPosition({ 680.0f, 880.0f });
 
     enEspera.setString("En espera");
     enEspera.setCharacterSize(32);
@@ -24,6 +27,11 @@ puntos(0), piezaGridX(3), piezaGridY(0), gameOver(false)
     siguientePieza.setCharacterSize(32);
     siguientePieza.setPosition({ 600.0f, 80.0f });
 
+    textoEvento.setFont(fuente);
+    textoEvento.setCharacterSize(28);
+    textoEvento.setFillColor(Color::Yellow);
+    textoEvento.setPosition({ 680.0f, 650.0f });
+
 	tablero.limpiar();
     for (int i = 0; i < 20; ++i) {
         FilaBloques* nuevaFila = new FilaBloques();
@@ -32,6 +40,9 @@ puntos(0), piezaGridX(3), piezaGridY(0), gameOver(false)
 
     bolsa.rellenarBolsa();
     piezaActual = bolsa.desencolar();
+    eventos.encolarPorTiempo(new EventoVelocidad(30.0f, 0.2f));
+    eventos.encolarPorTiempo(new EventoPuntos(60.0f, 25.0f));
+    eventos.encolarPorTiempo(new EventoBloque(10.0f));
 }
 
 MenuJuego::~MenuJuego() {
@@ -109,7 +120,30 @@ void MenuJuego::actualizar()
 {   
     if (gameOver) return;
 
-    tiempoAcumulado += relojCaida.restart().asSeconds();
+    float dt = relojCaida.restart().asSeconds();
+
+    if (tiempoMensajeEvento > 0.0f) {
+        tiempoMensajeEvento -= dt;
+    }
+
+    if (duracionPuntosDobles > 0.0f) {
+        duracionPuntosDobles -= dt;
+        if (duracionPuntosDobles <= 0.0f) {
+            multiplicadorPuntos = 1;
+            mostrarMensaje("Puntos Dobles Finalizados!");
+        }
+    }
+
+    float tiempoActual = relojJuego.getElapsedTime().asSeconds();
+    while (!eventos.estaVacia() && eventos.frente()->getTiempo() <= tiempoActual) {
+        Evento* ev = eventos.desencolar();
+        if (ev != nullptr) {
+            ev->ejecutar(*this);
+            delete ev;
+        }
+    }
+
+    tiempoAcumulado += dt;
 
     if (tiempoAcumulado >= velocidadCaida) {
         if (comprovarMovimiento(piezaGridX, piezaGridY + 1)) {
@@ -163,11 +197,18 @@ void MenuJuego::dibujar(RenderWindow & ventana) // Pruebas del tablero
     ventana.draw(puntaje);
     ventana.draw(enEspera);
     ventana.draw(siguientePieza);
+
+    if (tiempoMensajeEvento > 0.0f) {
+        ventana.draw(textoEvento);
+    }
 }
 
 void MenuJuego::fijarPieza()
 {
     if (!piezaActual) return;
+
+    bool bomba = piezaActual->getDestructor();
+    bool filasDestruidasPorBomba[20] = { false };
 
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
@@ -179,15 +220,37 @@ void MenuJuego::fijarPieza()
                     FilaBloques* fila = tablero.obtenerEn(targetY);
                     if (fila != nullptr) {
                         fila->columnas[targetX] = new Bloque(piezaActual->getForma());
+                        filasDestruidasPorBomba[targetY] = true;
                     }
                 }
             }
         }
     }
 
-    limpiarFilas();
     delete piezaActual;
+
+    if (bomba) {
+        for (int y = 19; y >= 0; y--) {
+            if (filasDestruidasPorBomba[y]) {
+                tablero.eliminarEn(y);
+                tablero.insertarInicio(new FilaBloques());
+                puntos += 100 * multiplicadorPuntos;
+            }
+        }
+        puntaje.setString("Puntaje: " + to_string(puntos));
+        mostrarMensaje("Destruccion masiva!");
+    }
+    else {
+        limpiarFilas();
+    }
+
     piezaActual = bolsa.desencolar();
+
+    if (siguienteDestructor && piezaActual != nullptr) {
+        piezaActual->setDestructor(true);
+        siguienteDestructor = false;
+    }
+
     piezaGridX = 3;
     piezaGridY = 0;
 
@@ -203,7 +266,7 @@ void MenuJuego::limpiarFilas()
         if (fila && fila->filaLlena()) {
             tablero.eliminarEn(i);
             tablero.insertarInicio(new FilaBloques());
-            puntos += 100;
+            puntos += 100 * multiplicadorPuntos;
             puntaje.setString("Puntaje: " + to_string(puntos));
         }
     }
@@ -233,4 +296,21 @@ bool MenuJuego::comprovarMovimiento(int nuevoX, int nuevoY)
         }
     }
     return true;
+}
+
+void MenuJuego::mostrarMensaje(const string& mensaje)
+{
+    textoEvento.setString(mensaje);
+    tiempoMensajeEvento = 3.0f;
+}
+
+void MenuJuego::destruirFilaCompleta(int filaIndex)
+{
+    if (filaIndex >= 0 && filaIndex < tablero.tamano()) {
+        tablero.eliminarEn(filaIndex);
+        tablero.insertarInicio(new FilaBloques());
+        puntos += 100 * multiplicadorPuntos;
+        puntaje.setString("Puntaje: " + to_string(puntos));
+        mostrarMensaje("Fila Destruida!");
+    }
 }

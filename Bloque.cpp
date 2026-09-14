@@ -43,6 +43,11 @@ void Bloque::aplicarColor()
 {
     if (cubo == nullptr) return;
 
+    if (bloqueDestructor) {
+        cubo->setColor(Color::White);
+        return;
+    }
+
     switch (forma) {
     case Forma::I: cubo->setColor(Color::Cyan); break;
     case Forma::J: cubo->setColor(Color::Blue); break;

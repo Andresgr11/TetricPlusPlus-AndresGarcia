@@ -1,11 +1,13 @@
 #pragma once
 #include "Cola.h"
-class ColaEventos : public Cola<ColaEventos*>
+#include "Evento.h"
+
+class ColaEventos : public Cola<Evento*>
 {
 private:
 
 public:
 	ColaEventos();
 	~ColaEventos();
+	void encolarPorTiempo(Evento* nuevoEvento);
 };
-
