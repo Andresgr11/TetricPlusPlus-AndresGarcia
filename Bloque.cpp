@@ -1,6 +1,6 @@
 #include "Bloque.h"
 
-Bloque::Bloque(Forma formaInicial, const string& rutaTextura) : cubo(nullptr), forma(formaInicial) {
+Bloque::Bloque(Forma formaInicial, const string& rutaTextura) : forma(formaInicial), cubo(nullptr) {
     if (!textura.loadFromFile(rutaTextura)) {
         cerr << "Error al cargar la textura del bloque: " << rutaTextura << endl;
     }

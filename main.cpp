@@ -25,6 +25,8 @@ int main() {
     Pantalla* pantallaActual = nullptr;
     pantallaActual = new MenuPrincipal();
 
+    ListaDoble<EstadoJuego> historialGuardado;
+
     while (ventana.isOpen()) {
 
         while (const auto evento = ventana.pollEvent()) {
@@ -47,6 +49,10 @@ int main() {
                     ventana.close();
                 }
                 else if (cambio == TipoPantalla::GameOver) {
+                    MenuJuego* juego = dynamic_cast<MenuJuego*>(pantallaActual);
+                    if (juego != nullptr) {
+                        historialGuardado = *(juego->getHistorial());
+                    }
                     delete pantallaActual;
                     pantallaActual = new FinPartida();
                 }
@@ -56,7 +62,9 @@ int main() {
                 }
                 else if (cambio == TipoPantalla::Replay) {
                     delete pantallaActual;
-                    pantallaActual = new Repeticion();
+                    Repeticion* pantallaReplay = new Repeticion();
+                    pantallaReplay->cargarHistorial(&historialGuardado);
+                    pantallaActual = pantallaReplay;
                 }
             }
         }

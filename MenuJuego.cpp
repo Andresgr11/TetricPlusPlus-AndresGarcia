@@ -43,6 +43,7 @@ fondoSprite(nullptr), piezaActual(nullptr), puntos(0), piezaGridX(3), piezaGridY
     eventos.encolarPorTiempo(new EventoVelocidad(30.0f, 0.2f));
     eventos.encolarPorTiempo(new EventoPuntos(60.0f, 25.0f));
     eventos.encolarPorTiempo(new EventoBloque(10.0f));
+    registrarEstado();
 }
 
 MenuJuego::~MenuJuego() {
@@ -62,18 +63,21 @@ TipoPantalla MenuJuego::procesarEvento(const Event& evento, const RenderWindow& 
         {
             if (comprovarMovimiento(piezaGridX - 1, piezaGridY)) {
                 piezaGridX--;
+                registrarEstado();
             }
         }
         else if (keyPressed->code == Keyboard::Key::D)
         {
             if (comprovarMovimiento(piezaGridX + 1, piezaGridY)) {
                 piezaGridX++;
+                registrarEstado();
             }
         }
         else if (keyPressed->code == Keyboard::Key::S)
         {
             if (comprovarMovimiento(piezaGridX, piezaGridY + 1)) {
                 piezaGridY++;
+                registrarEstado();
             }
             else {
                 fijarPieza();
@@ -84,6 +88,7 @@ TipoPantalla MenuJuego::procesarEvento(const Event& evento, const RenderWindow& 
             if (piezaEspera.estaVacia()) {
                 piezaEspera.apilar(piezaActual);
                 piezaActual = bolsa.desencolar();
+                registrarEstado();
             }
             
         }
@@ -91,6 +96,7 @@ TipoPantalla MenuJuego::procesarEvento(const Event& evento, const RenderWindow& 
         {
             if (!piezaEspera.estaVacia()) {             
                 piezaActual = piezaEspera.desapilar();
+                registrarEstado();
             }
         }
         else if (keyPressed->code == Keyboard::Key::Right)
@@ -99,7 +105,10 @@ TipoPantalla MenuJuego::procesarEvento(const Event& evento, const RenderWindow& 
                 piezaActual->rotarDerecha();
                 if (!comprovarMovimiento(piezaGridX, piezaGridY)) {
                     piezaActual->rotarIzquierda();
-                }
+                    
+                } else {
+                    registrarEstado();
+                }                
             }
         }
         else if (keyPressed->code == Keyboard::Key::Left)
@@ -108,7 +117,9 @@ TipoPantalla MenuJuego::procesarEvento(const Event& evento, const RenderWindow& 
                 piezaActual->rotarIzquierda();
                 if (!comprovarMovimiento(piezaGridX, piezaGridY)) {
                     piezaActual->rotarDerecha();
-                }
+                } else {
+                    registrarEstado();
+                }               
             }
         }
     }
@@ -148,6 +159,7 @@ void MenuJuego::actualizar()
     if (tiempoAcumulado >= velocidadCaida) {
         if (comprovarMovimiento(piezaGridX, piezaGridY + 1)) {
             piezaGridY++;
+            registrarEstado();
         }
         else {
             fijarPieza();
@@ -253,6 +265,7 @@ void MenuJuego::fijarPieza()
 
     piezaGridX = 3;
     piezaGridY = 0;
+    registrarEstado();
 
     if (!comprovarMovimiento(piezaGridX, piezaGridY)) {
         gameOver = true;
@@ -312,5 +325,42 @@ void MenuJuego::destruirFilaCompleta(int filaIndex)
         puntos += 100 * multiplicadorPuntos;
         puntaje.setString("Puntaje: " + to_string(puntos));
         mostrarMensaje("Fila Destruida!");
+        registrarEstado();
     }
+}
+
+void MenuJuego::registrarEstado()
+{
+    EstadoJuego estado;
+    estado.puntos = puntos;
+    estado.piezaGridX = piezaGridX;
+    estado.piezaGridY = piezaGridY;
+
+    if (piezaActual != nullptr) {
+        estado.piezaActualForma = piezaActual->getForma();
+        estado.piezaActualRotacion = piezaActual->getOrientacion();
+    }
+
+    if (!piezaEspera.estaVacia()) {
+        estado.piezaEsperaForma = piezaEspera.tope()->getForma();
+        estado.tienePiezaEspera = true;
+    }
+    else {
+        estado.tienePiezaEspera = false;
+    }
+
+    for (int i = 0; i < 20; i++) {
+        FilaBloques* fila = tablero.obtenerEn(i);
+        for (int j = 0; j < 10; j++) {
+            if (fila != nullptr && fila->columnas[j] != nullptr) {
+                estado.matrizTablero[i][j] = fila->columnas[j]->getForma();
+                estado.matrizOcupada[i][j] = true;
+            }
+            else {
+                estado.matrizOcupada[i][j] = false;
+            }
+        }
+    }
+
+    replay.insertarFinal(estado);
 }

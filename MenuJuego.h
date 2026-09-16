@@ -4,13 +4,15 @@
 #include "ListaDoble.h"
 #include "Bloque.h"
 #include "Pila.h"
-#include "Cola.h"
 #include "Bolsa.h"
 #include "ColaEventos.h"
+#include "EstadoJuego.h"
+
 
 class MenuJuego : public Pantalla {
 private:
     ListaEnlazada tablero;
+    ListaDoble<EstadoJuego> replay;
     Texture fondo;
     Sprite* fondoSprite;
     Bloque* piezaActual;
@@ -51,6 +53,8 @@ public:
     void activarPuntosDobles(float duracion) { multiplicadorPuntos = 2; duracionPuntosDobles = duracion; }
     void activarBloqueDestructor() { siguienteDestructor = true; }
     void destruirFilaCompleta(int filaIndex);
+    void registrarEstado();
+    ListaDoble<EstadoJuego>* getHistorial() { return &replay; }
 };
 
 

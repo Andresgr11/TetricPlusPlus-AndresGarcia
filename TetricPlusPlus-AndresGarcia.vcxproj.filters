@@ -72,6 +72,9 @@
     <ClCompile Include="EventoBloque.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
+    <ClCompile Include="EstadoJuego.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Pila.h">
@@ -126,6 +129,9 @@
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
     <ClInclude Include="EventoBloque.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="EstadoJuego.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>

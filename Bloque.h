@@ -25,6 +25,7 @@ public:
     void aplicarColor();
     void crearForma();
     int getCelda(int fila, int col) const;
+    int getOrientacion() const { return orientacion; }
     void rotarDerecha();
     void rotarIzquierda();
     void dibujar(RenderWindow& ventana, float posX, float posY, float tamanoBloque = 48.0f);
