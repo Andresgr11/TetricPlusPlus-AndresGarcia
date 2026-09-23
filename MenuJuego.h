@@ -32,6 +32,7 @@ private:
     Text enEspera;
     Text siguientePieza;
     Text textoEvento;
+    Text txtEventosActivos;
     float tiempoMensajeEvento = 0.0f;
     const float posXInicial = 80.0f;
     const float posYInicial = 280.0f;
@@ -42,6 +43,7 @@ private:
     float velocidadCaida = 0.5f;
     int multiplicadorPuntos = 1;
     float duracionPuntosDobles = 0.0f;
+    float duracionVelocidad = 0.0f;
     bool siguienteDestructor = false;
 public:
     MenuJuego(const string& nombre = "Jugador");
@@ -56,6 +58,7 @@ public:
     bool comprovarMovimiento(int nuevoX, int nuevoY);
     void setVelocidadCaida(float velocidad) { velocidadCaida = velocidad; }
     void mostrarMensaje(const string& mensaje);
+    void activarVelocidadAumentada(float nuevaVelocidad, float duracion);
     void activarPuntosDobles(float duracion) { multiplicadorPuntos = 2; duracionPuntosDobles = duracion; }
     void activarBloqueDestructor() { siguienteDestructor = true; }
     void destruirFilaCompleta(int filaIndex);

@@ -3,6 +3,6 @@
 
 void EventoVelocidad::ejecutar(MenuJuego& juego)
 {
-	juego.setVelocidadCaida(nuevaVelocidad);
+	juego.activarVelocidadAumentada(nuevaVelocidad, duracion);
 	juego.mostrarMensaje("Velocidad Aumentada!");
 }

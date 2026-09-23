@@ -19,3 +19,5 @@ Jugador 0
 l 0
 qa 0
 a 0
+a 0
+a 0

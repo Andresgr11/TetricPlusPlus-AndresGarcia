@@ -1,7 +1,7 @@
 #include "Repeticion.h"
 
 Repeticion::Repeticion() : titulo(fuente), txtPuntaje(fuente), txtControles(fuente), txtEnEspera(fuente),
-historial(nullptr), cuboSprite(nullptr), fondoSprite(nullptr)
+siguientePieza(fuente), historial(nullptr), cuboSprite(nullptr), fondoSprite(nullptr)
 {
     if (!fuente.openFromFile("recursos/tetrisfont.otf")) {
         cerr << "Error al cargar la fuente de texto." << endl;
@@ -21,6 +21,10 @@ historial(nullptr), cuboSprite(nullptr), fondoSprite(nullptr)
     titulo.setString("REPETICION DE PARTIDA");
     titulo.setCharacterSize(34);
     titulo.setPosition({ 320.0f, 30.0f });
+
+    siguientePieza.setString("Siguiente pieza:");
+    siguientePieza.setCharacterSize(42);
+    siguientePieza.setPosition({ 400.0f, 120.0f });
 
     txtEnEspera.setString("En espera");
     txtEnEspera.setCharacterSize(38);
@@ -98,6 +102,7 @@ void Repeticion::dibujar(RenderWindow& ventana)
     ventana.draw(titulo);
     ventana.draw(txtEnEspera);
     ventana.draw(txtControles);
+    ventana.draw(siguientePieza);
 
     if (historial == nullptr || historial->vacia()) return;
     EstadoJuego estadoActual = historial->getActual();
@@ -105,9 +110,19 @@ void Repeticion::dibujar(RenderWindow& ventana)
     txtPuntaje.setString("Puntaje: " + to_string(estadoActual.puntos));
     ventana.draw(txtPuntaje);
 
+    float posX = 740.0f;
+    float posY = 75.0f;
+    float y = 0.0f;
+
+    for (int i = 0; i < estadoActual.cantidadBolsa; i++) {
+        Bloque piezaBolsa(estadoActual.bolsa[i]);
+        piezaBolsa.dibujar(ventana, posX, posY + y, tamanoBloque);
+        y += tamanoBloque * 3.0f;
+    }
+
     if (estadoActual.tienePiezaEspera) {
         Bloque piezaEsperaObj(estadoActual.piezaEsperaForma);
-        piezaEsperaObj.dibujar(ventana, 150.0f, 195.0f, tamanoBloque);
+        piezaEsperaObj.dibujar(ventana, 150.0f, 150.0f, tamanoBloque);
     }
 
     if (cuboSprite != nullptr) {

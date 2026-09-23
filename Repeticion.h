@@ -10,6 +10,7 @@ private:
     Text txtPuntaje;
     Text txtControles;
     Text txtEnEspera;
+    Text siguientePieza;
     Texture fondo;
     Sprite* fondoSprite;
     ListaDoble<EstadoJuego>* historial;

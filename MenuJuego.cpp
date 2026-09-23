@@ -4,7 +4,7 @@
 #include "EventoBloque.h"
 
 MenuJuego::MenuJuego(const string& nombre) : nombreJugador(nombre), puntos(0), puntaje(fuente), enEspera(fuente),
-siguientePieza(fuente), textoEvento(fuente), fondoSprite(nullptr), piezaActual(nullptr), piezaGridX(3),
+siguientePieza(fuente), textoEvento(fuente), txtEventosActivos(fuente), fondoSprite(nullptr), piezaActual(nullptr), piezaGridX(3),
 piezaGridY(0), gameOver(false), velocidadCaida(0.5f)
 {
     if (!fondo.loadFromFile("recursos/fondo.png")) {
@@ -29,6 +29,11 @@ piezaGridY(0), gameOver(false), velocidadCaida(0.5f)
     textoEvento.setFillColor(Color::Yellow);
     textoEvento.setPosition({ 680.0f, 1020.0f });
 
+    txtEventosActivos.setFont(fuente);
+    txtEventosActivos.setCharacterSize(22);
+    txtEventosActivos.setFillColor(Color::Green);
+    txtEventosActivos.setPosition({ 680.0f, 950.0f });
+
     puntaje.setString("Puntaje: " + to_string(puntos));
     puntaje.setCharacterSize(50);
     puntaje.setPosition({ 700.0f, 1125.0f });
@@ -41,10 +46,10 @@ piezaGridY(0), gameOver(false), velocidadCaida(0.5f)
 
     bolsa.rellenarBolsa();
     piezaActual = bolsa.desencolar();
-    eventos.encolarPorTiempo(new EventoVelocidad(30.0f, 0.2f));
+    eventos.encolarPorTiempo(new EventoVelocidad(30.0f, 0.2f, 15.0f));
     eventos.encolarPorTiempo(new EventoPuntos(85.0f, 25.0f));
     eventos.encolarPorTiempo(new EventoBloque(60.0f));
-    eventos.encolarPorTiempo(new EventoVelocidad(110.0f, 0.3f));
+    eventos.encolarPorTiempo(new EventoVelocidad(110.0f, 0.3f, 20.0f));
     eventos.encolarPorTiempo(new EventoPuntos(145.0f, 30.0f));
     eventos.encolarPorTiempo(new EventoBloque(20.0f));
     registrarEstado();
@@ -95,6 +100,8 @@ TipoPantalla MenuJuego::procesarEvento(const Event& evento, const RenderWindow& 
                 }
                 piezaEspera.apilar(piezaActual);
                 piezaActual = bolsa.desencolar();
+                piezaGridX = 3;
+                piezaGridY = 0;
                 registrarEstado();
             }           
         }
@@ -155,10 +162,34 @@ void MenuJuego::actualizar()
     if (duracionPuntosDobles > 0.0f) {
         duracionPuntosDobles -= dt;
         if (duracionPuntosDobles <= 0.0f) {
+            duracionPuntosDobles = 0.0f;
             multiplicadorPuntos = 1;
             mostrarMensaje("Puntos Dobles Finalizados!");
         }
     }
+
+    if (duracionVelocidad > 0.0f) {
+        duracionVelocidad -= dt;
+        if (duracionVelocidad <= 0.0f) {
+            duracionVelocidad = 0.0f;
+            velocidadCaida = 0.5f;
+            mostrarMensaje("Velocidad Normalizada!");
+        }
+    }
+
+    string infoEventos = "";
+
+    if (duracionVelocidad > 0.0f) {
+        int segundos = static_cast<int>(duracionVelocidad) + 1;
+        infoEventos += "Vel. Rapida: " + to_string(segundos) + "s\n";
+    }
+
+    if (duracionPuntosDobles > 0.0f) {
+        int segundos = static_cast<int>(duracionPuntosDobles) + 1;
+        infoEventos += "Puntos x2: " + to_string(segundos) + "s\n";
+    }
+
+    txtEventosActivos.setString(infoEventos);
 
     float tiempoActual = relojJuego.getElapsedTime().asSeconds();
     while (!eventos.estaVacia() && eventos.frente()->getTiempo() <= tiempoActual) {
@@ -224,6 +255,7 @@ void MenuJuego::dibujar(RenderWindow & ventana)
     ventana.draw(puntaje);
     ventana.draw(enEspera);
     ventana.draw(siguientePieza);
+    ventana.draw(txtEventosActivos);
 
     if (tiempoMensajeEvento > 0.0f) {
         ventana.draw(textoEvento);
@@ -340,6 +372,13 @@ void MenuJuego::mostrarMensaje(const string& mensaje)
     tiempoMensajeEvento = 3.0f;
 }
 
+void MenuJuego::activarVelocidadAumentada(float nuevaVelocidad, float duracion)
+{
+    velocidadCaida = nuevaVelocidad;
+    duracionVelocidad = duracion;
+    mostrarMensaje("¡Velocidad Aumentada!");
+}
+
 void MenuJuego::destruirFilaCompleta(int filaIndex)
 {
     if (filaIndex >= 0 && filaIndex < tablero.tamano()) {
@@ -370,6 +409,14 @@ void MenuJuego::registrarEstado()
     }
     else {
         estado.tienePiezaEspera = false;
+    }
+
+    estado.cantidadBolsa = bolsa.tamano();
+    for (int i = 0; i < bolsa.tamano() && i < 10; i++) {
+        Bloque* pieza = bolsa.verEn(i);
+        if (pieza != nullptr) {
+            estado.bolsa[i] = pieza->getForma();
+        }
     }
 
     for (int i = 0; i < 20; i++) {
