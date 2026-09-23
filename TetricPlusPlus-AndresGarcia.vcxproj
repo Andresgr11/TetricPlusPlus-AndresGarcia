@@ -162,6 +162,7 @@
     <ClCompile Include="EventoVelocidad.cpp" />
     <ClCompile Include="FilaBloques.cpp" />
     <ClCompile Include="FinPartida.cpp" />
+    <ClCompile Include="GestorPuntajes.cpp" />
     <ClCompile Include="ListaDoble.cpp" />
     <ClCompile Include="ListaEnlazada.cpp" />
     <ClCompile Include="MenuJuego.cpp" />
@@ -184,6 +185,7 @@
     <ClInclude Include="EventoVelocidad.h" />
     <ClInclude Include="FilaBloques.h" />
     <ClInclude Include="FinPartida.h" />
+    <ClInclude Include="GestorPuntajes.h" />
     <ClInclude Include="ListaDoble.h" />
     <ClInclude Include="ListaEnlazada.h" />
     <ClInclude Include="MenuJuego.h" />

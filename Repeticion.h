@@ -7,11 +7,9 @@ class Repeticion : public Pantalla {
 private:
     Font fuente;
     Text titulo;
-    Text txtSalir;
     Text txtPuntaje;
     Text txtControles;
     Text txtEnEspera;
-    RectangleShape btnSalir;
     Texture fondo;
     Sprite* fondoSprite;
     ListaDoble<EstadoJuego>* historial;

@@ -16,15 +16,6 @@ Bloque::~Bloque() {
     }
 }
 
-Forma Bloque::getForma() const
-{
-    return forma;
-}
-
-Sprite* Bloque::getSprite() const {
-    return cubo;
-}
-
 void Bloque::setForma(Forma nuevaForma)
 {
     forma = nuevaForma;
@@ -70,10 +61,10 @@ void Bloque::crearForma()
     switch (forma) {
     case Forma::I:
         if (orientacion == 0 || orientacion == 2) {
-            matrizForma[0][0] = 1;
-            matrizForma[0][1] = 1;
-            matrizForma[0][2] = 1;
-            matrizForma[0][3] = 1;
+            matrizForma[1][0] = 1;
+            matrizForma[1][1] = 1;
+            matrizForma[1][2] = 1;
+            matrizForma[1][3] = 1;
         }
         else {
             matrizForma[0][1] = 1;
@@ -85,16 +76,16 @@ void Bloque::crearForma()
 
     case Forma::J:
         if (orientacion == 0) {
-            matrizForma[0][0] = 1;
             matrizForma[1][0] = 1;
-            matrizForma[1][1] = 1;
-            matrizForma[1][2] = 1;
+            matrizForma[2][0] = 1;
+            matrizForma[2][1] = 1;
+            matrizForma[2][2] = 1;
         }
         else if (orientacion == 1) {
-            matrizForma[0][1] = 1;
-            matrizForma[0][2] = 1;
             matrizForma[1][1] = 1;
+            matrizForma[1][2] = 1;
             matrizForma[2][1] = 1;
+            matrizForma[3][1] = 1;
         }
         else if (orientacion == 2) {
             matrizForma[1][0] = 1;
@@ -103,25 +94,25 @@ void Bloque::crearForma()
             matrizForma[2][2] = 1;
         }
         else {
-            matrizForma[0][1] = 1;
             matrizForma[1][1] = 1;
-            matrizForma[2][0] = 1;
             matrizForma[2][1] = 1;
+            matrizForma[3][0] = 1;
+            matrizForma[3][1] = 1;
         }
         break;
 
     case Forma::L:
         if (orientacion == 0) {
-            matrizForma[0][2] = 1;
-            matrizForma[1][0] = 1;
-            matrizForma[1][1] = 1;
             matrizForma[1][2] = 1;
-        }
-        else if (orientacion == 1) {
-            matrizForma[0][1] = 1;
-            matrizForma[1][1] = 1;
+            matrizForma[2][0] = 1;
             matrizForma[2][1] = 1;
             matrizForma[2][2] = 1;
+        }
+        else if (orientacion == 1) {
+            matrizForma[1][1] = 1;
+            matrizForma[2][1] = 1;
+            matrizForma[3][1] = 1;
+            matrizForma[3][2] = 1;
         }
         else if (orientacion == 2) {
             matrizForma[1][0] = 1;
@@ -130,47 +121,47 @@ void Bloque::crearForma()
             matrizForma[2][0] = 1;
         }
         else {
-            matrizForma[0][0] = 1;
-            matrizForma[0][1] = 1;
+            matrizForma[1][0] = 1;
             matrizForma[1][1] = 1;
             matrizForma[2][1] = 1;
+            matrizForma[3][1] = 1;
         }
         break;
 
     case Forma::O:
-        matrizForma[0][1] = 1;
-        matrizForma[0][2] = 1;
         matrizForma[1][1] = 1;
         matrizForma[1][2] = 1;
+        matrizForma[2][1] = 1;
+        matrizForma[2][2] = 1;
         break;
 
     case Forma::S:
         if (orientacion == 0 || orientacion == 2) {
-            matrizForma[0][1] = 1;
-            matrizForma[0][2] = 1;
-            matrizForma[1][0] = 1;
-            matrizForma[1][1] = 1;
-        }
-        else {
-            matrizForma[0][1] = 1;
             matrizForma[1][1] = 1;
             matrizForma[1][2] = 1;
+            matrizForma[2][0] = 1;
+            matrizForma[2][1] = 1;
+        }
+        else {
+            matrizForma[1][1] = 1;
+            matrizForma[2][1] = 1;
             matrizForma[2][2] = 1;
+            matrizForma[3][2] = 1;
         }
         break;
 
     case Forma::T:
         if (orientacion == 0) {
-            matrizForma[0][1] = 1;
-            matrizForma[1][0] = 1;
             matrizForma[1][1] = 1;
-            matrizForma[1][2] = 1;
+            matrizForma[2][0] = 1;
+            matrizForma[2][1] = 1;
+            matrizForma[2][2] = 1;
         }
         else if (orientacion == 1) {
-            matrizForma[0][1] = 1;
             matrizForma[1][1] = 1;
-            matrizForma[1][2] = 1;
             matrizForma[2][1] = 1;
+            matrizForma[2][2] = 1;
+            matrizForma[3][1] = 1;
         }
         else if (orientacion == 2) {
             matrizForma[1][0] = 1;
@@ -179,25 +170,25 @@ void Bloque::crearForma()
             matrizForma[2][1] = 1;
         }
         else {
-            matrizForma[0][1] = 1;
-            matrizForma[1][0] = 1;
             matrizForma[1][1] = 1;
+            matrizForma[2][0] = 1;
             matrizForma[2][1] = 1;
+            matrizForma[3][1] = 1;
         }
         break;
 
     case Forma::Z:
         if (orientacion == 0 || orientacion == 2) {
-            matrizForma[0][0] = 1;
-            matrizForma[0][1] = 1;
+            matrizForma[1][0] = 1;
             matrizForma[1][1] = 1;
-            matrizForma[1][2] = 1;
+            matrizForma[2][1] = 1;
+            matrizForma[2][2] = 1;
         }
         else {
-            matrizForma[0][2] = 1;
-            matrizForma[1][1] = 1;
             matrizForma[1][2] = 1;
             matrizForma[2][1] = 1;
+            matrizForma[2][2] = 1;
+            matrizForma[3][1] = 1;
         }
         break;
     }
@@ -211,12 +202,20 @@ int Bloque::getCelda(int fila, int col) const
     return 0;
 }
 
-void Bloque::rotarDerecha() {
+void Bloque::resetearOrientacion()
+{
+    orientacion = 0;
+    crearForma();
+}
+
+void Bloque::rotarDerecha()
+{
     orientacion = (orientacion + 1) % 4;
     crearForma();
 }
 
-void Bloque::rotarIzquierda() {
+void Bloque::rotarIzquierda()
+{
     orientacion = (orientacion + 3) % 4;
     crearForma();
 }

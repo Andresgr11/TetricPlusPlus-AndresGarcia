@@ -18,14 +18,16 @@ protected:
 public:
     Bloque(Forma formaInicial, const string& rutaTextura = "recursos/bloque1.png");
     ~Bloque();
-    Forma getForma() const;
-    Sprite* getSprite() const;
+    Forma getForma() const { return forma; }
+    Sprite* getSprite() const { return cubo; }
     void setForma(Forma nuevaForma);
     static Forma aleatoria();
     void aplicarColor();
     void crearForma();
     int getCelda(int fila, int col) const;
     int getOrientacion() const { return orientacion; }
+    void setOrientacion(int o) { orientacion = o; }
+    void resetearOrientacion();
     void rotarDerecha();
     void rotarIzquierda();
     void dibujar(RenderWindow& ventana, float posX, float posY, float tamanoBloque = 48.0f);

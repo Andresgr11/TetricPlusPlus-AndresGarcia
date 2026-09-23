@@ -7,7 +7,7 @@
 #include "Bolsa.h"
 #include "ColaEventos.h"
 #include "EstadoJuego.h"
-
+#include "GestorPuntajes.h"
 
 class MenuJuego : public Pantalla {
 private:
@@ -19,10 +19,14 @@ private:
     Bolsa bolsa;
     Pila piezaEspera;
     ColaEventos eventos;
+    string nombreJugador;
+    GestorPuntajes gestorPuntajes;
     int piezaGridX;
     int piezaGridY;
     int puntos;
     bool gameOver;
+    bool siguientePiezaEspera;
+    bool pausa;
     Font fuente;
     Text puntaje;
     Text enEspera;
@@ -40,11 +44,13 @@ private:
     float duracionPuntosDobles = 0.0f;
     bool siguienteDestructor = false;
 public:
-    MenuJuego();
+    MenuJuego(const string& nombre = "Jugador");
     ~MenuJuego();
     TipoPantalla procesarEvento(const Event& evento, const RenderWindow& ventana) override;
     void actualizar() override;
     void dibujar(RenderWindow& ventana) override;
+    string getNombreJugador() const { return nombreJugador; }
+    int getPuntaje() const { return puntos; }
     void fijarPieza();
     void limpiarFilas();
     bool comprovarMovimiento(int nuevoX, int nuevoY);
@@ -56,5 +62,3 @@ public:
     void registrarEstado();
     ListaDoble<EstadoJuego>* getHistorial() { return &replay; }
 };
-
-

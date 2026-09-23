@@ -3,11 +3,12 @@
 #include "EventoPuntos.h"
 #include "EventoBloque.h"
 
-MenuJuego::MenuJuego() : puntaje(fuente), enEspera(fuente), siguientePieza(fuente), textoEvento(fuente),
-fondoSprite(nullptr), piezaActual(nullptr), puntos(0), piezaGridX(3), piezaGridY(0), gameOver(false), velocidadCaida(0.5f)
+MenuJuego::MenuJuego(const string& nombre) : nombreJugador(nombre), puntos(0), puntaje(fuente), enEspera(fuente),
+siguientePieza(fuente), textoEvento(fuente), fondoSprite(nullptr), piezaActual(nullptr), piezaGridX(3),
+piezaGridY(0), gameOver(false), velocidadCaida(0.5f)
 {
-    if (!fondo.loadFromFile("recursos/tablero.png")) {
-        cerr << "Error al cargar la textura." << endl;
+    if (!fondo.loadFromFile("recursos/fondo.png")) {
+        cerr << "Error al cargar la textura del fondo." << endl;
     }
     fondoSprite = new Sprite(fondo);
 
@@ -15,25 +16,25 @@ fondoSprite(nullptr), piezaActual(nullptr), puntos(0), piezaGridX(3), piezaGridY
         cerr << "Error al cargar la fuente de texto." << endl;
     }
 
-    puntaje.setString("Puntaje: " + to_string(puntos));
-    puntaje.setCharacterSize(64);
-    puntaje.setPosition({ 680.0f, 880.0f });
-
     enEspera.setString("En espera");
-    enEspera.setCharacterSize(32);
-    enEspera.setPosition({ 80.0f, 200.0f });
+    enEspera.setCharacterSize(38);
+    enEspera.setPosition({ 80.0f, 135.0f });
 
     siguientePieza.setString("Siguiente pieza:");
-    siguientePieza.setCharacterSize(32);
-    siguientePieza.setPosition({ 600.0f, 80.0f });
+    siguientePieza.setCharacterSize(42);
+    siguientePieza.setPosition({ 400.0f, 120.0f });
 
     textoEvento.setFont(fuente);
-    textoEvento.setCharacterSize(28);
+    textoEvento.setCharacterSize(26);
     textoEvento.setFillColor(Color::Yellow);
-    textoEvento.setPosition({ 680.0f, 650.0f });
+    textoEvento.setPosition({ 680.0f, 1020.0f });
+
+    puntaje.setString("Puntaje: " + to_string(puntos));
+    puntaje.setCharacterSize(50);
+    puntaje.setPosition({ 700.0f, 1125.0f });
 
 	tablero.limpiar();
-    for (int i = 0; i < 20; ++i) {
+    for (int i = 0; i < 20; i++) {
         FilaBloques* nuevaFila = new FilaBloques();
         tablero.insertarFinal(nuevaFila);
     }
@@ -41,8 +42,11 @@ fondoSprite(nullptr), piezaActual(nullptr), puntos(0), piezaGridX(3), piezaGridY
     bolsa.rellenarBolsa();
     piezaActual = bolsa.desencolar();
     eventos.encolarPorTiempo(new EventoVelocidad(30.0f, 0.2f));
-    eventos.encolarPorTiempo(new EventoPuntos(60.0f, 25.0f));
-    eventos.encolarPorTiempo(new EventoBloque(10.0f));
+    eventos.encolarPorTiempo(new EventoPuntos(85.0f, 25.0f));
+    eventos.encolarPorTiempo(new EventoBloque(60.0f));
+    eventos.encolarPorTiempo(new EventoVelocidad(110.0f, 0.3f));
+    eventos.encolarPorTiempo(new EventoPuntos(145.0f, 30.0f));
+    eventos.encolarPorTiempo(new EventoBloque(20.0f));
     registrarEstado();
 }
 
@@ -86,17 +90,20 @@ TipoPantalla MenuJuego::procesarEvento(const Event& evento, const RenderWindow& 
         else if (keyPressed->code == Keyboard::Key::Q)
         {
             if (piezaEspera.estaVacia()) {
+                if (piezaActual != nullptr) {
+                    piezaActual->resetearOrientacion();
+                }
                 piezaEspera.apilar(piezaActual);
                 piezaActual = bolsa.desencolar();
                 registrarEstado();
-            }
-            
+            }           
         }
         else if (keyPressed->code == Keyboard::Key::E)
-        {
-            if (!piezaEspera.estaVacia()) {             
-                piezaActual = piezaEspera.desapilar();
-                registrarEstado();
+        {          
+            if (!siguientePiezaEspera && !piezaEspera.estaVacia()) {
+                siguientePiezaEspera = true;
+                mostrarMensaje("La pieza de espera sera la siguiente en salir.");
+
             }
         }
         else if (keyPressed->code == Keyboard::Key::Right)
@@ -122,6 +129,10 @@ TipoPantalla MenuJuego::procesarEvento(const Event& evento, const RenderWindow& 
                 }               
             }
         }
+        else if (keyPressed->code == Keyboard::Key::Escape)
+        {
+            pausa = !pausa;
+        }        
     }
 
     return TipoPantalla::Ninguna;
@@ -130,6 +141,10 @@ TipoPantalla MenuJuego::procesarEvento(const Event& evento, const RenderWindow& 
 void MenuJuego::actualizar()
 {   
     if (gameOver) return;
+    if (pausa) {
+        mostrarMensaje("Pausa");
+        return;
+    }
 
     float dt = relojCaida.restart().asSeconds();
 
@@ -172,7 +187,7 @@ void MenuJuego::actualizar()
     }
 }
 
-void MenuJuego::dibujar(RenderWindow & ventana) // Pruebas del tablero
+void MenuJuego::dibujar(RenderWindow & ventana)
 {
     if (fondoSprite != nullptr) {
         ventana.draw(*fondoSprite);
@@ -203,8 +218,8 @@ void MenuJuego::dibujar(RenderWindow & ventana) // Pruebas del tablero
         piezaActual->dibujar(ventana, px, py, tamanoBloque);
     }
 
-    piezaEspera.dibujar(ventana, 80.0f, 88.0f);
-    bolsa.dibujar(ventana, 805.0f, 140.0f, tamanoBloque);
+    piezaEspera.dibujar(ventana, 150.0f, 150.0f);
+    bolsa.dibujar(ventana, 740.0f, 75.0f, tamanoBloque);
 
     ventana.draw(puntaje);
     ventana.draw(enEspera);
@@ -256,8 +271,15 @@ void MenuJuego::fijarPieza()
         limpiarFilas();
     }
 
-    piezaActual = bolsa.desencolar();
-
+    if (siguientePiezaEspera) {
+        if (!piezaEspera.estaVacia()) {
+            piezaActual = piezaEspera.desapilar();
+            siguientePiezaEspera = false;
+        }
+    }
+    else {
+        piezaActual = bolsa.desencolar();
+    }
     if (siguienteDestructor && piezaActual != nullptr) {
         piezaActual->setDestructor(true);
         siguienteDestructor = false;
@@ -269,6 +291,7 @@ void MenuJuego::fijarPieza()
 
     if (!comprovarMovimiento(piezaGridX, piezaGridY)) {
         gameOver = true;
+        gestorPuntajes.agregarPuntaje(nombreJugador, puntos);
     }
 }
 

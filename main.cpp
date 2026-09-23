@@ -38,8 +38,13 @@ int main() {
                 TipoPantalla cambio = pantallaActual->procesarEvento(*evento, ventana);
 
                 if (cambio == TipoPantalla::Juego) {
+                    string nombre = "Jugador";
+                    MenuPrincipal* menu = dynamic_cast<MenuPrincipal*>(pantallaActual);
+                    if (menu) {
+                        nombre = menu->getNombreJugador();
+                    }
                     delete pantallaActual;
-                    pantallaActual = new MenuJuego();
+                    pantallaActual = new MenuJuego(nombre);
                 }
                 else if (cambio == TipoPantalla::Menu) {
                     delete pantallaActual;
@@ -49,12 +54,16 @@ int main() {
                     ventana.close();
                 }
                 else if (cambio == TipoPantalla::GameOver) {
+                    string nombreFinal = "Jugador";
+                    int puntajeFinal = 0;
                     MenuJuego* juego = dynamic_cast<MenuJuego*>(pantallaActual);
                     if (juego != nullptr) {
                         historialGuardado = *(juego->getHistorial());
+                        nombreFinal = juego->getNombreJugador();
+                        puntajeFinal = juego->getPuntaje();
                     }
                     delete pantallaActual;
-                    pantallaActual = new FinPartida();
+                    pantallaActual = new FinPartida(nombreFinal, puntajeFinal);
                 }
                 else if (cambio == TipoPantalla::Puntajes) {
                     delete pantallaActual;
