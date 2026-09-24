@@ -88,3 +88,21 @@ vector<RegistroPuntaje> GestorPuntajes::obtenerTop10(AlgoritmoOrdenamiento algor
     }
     return lista;
 }
+
+void GestorPuntajes::generarPuntajesAleatorios(int cantidad) {
+    ofstream archivo(rutaArchivo);
+    if (!archivo.is_open()) {
+        cerr << "Error al abrir el archivo para generar puntajes: " << rutaArchivo << endl;
+        return;
+    }
+
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_int_distribution<int> distPuntaje(0, 10000);
+
+    for (int i = 1; i <= cantidad; ++i) {
+        archivo << "Jugador_" << i << " " << distPuntaje(gen) << "\n";
+    }
+    archivo.close();
+    cout << "-> Se generaron " << cantidad << " puntajes en " << rutaArchivo << endl;
+}

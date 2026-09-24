@@ -1,6 +1,8 @@
 #pragma once
 #include "Pantalla.h"
 #include "GestorPuntajes.h"
+#include <chrono>
+#include <random>
 
 class MenuPuntajes : public Pantalla {
 private:
@@ -15,6 +17,7 @@ private:
     Text txtQuick;
     Text txtAlgoritmoActivo;
     GestorPuntajes gestor;
+    void medirTiemposReales();
 public:
     MenuPuntajes();
     TipoPantalla procesarEvento(const Event& evento, const RenderWindow& ventana) override;

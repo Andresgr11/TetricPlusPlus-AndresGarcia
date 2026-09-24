@@ -45,6 +45,9 @@ private:
     float duracionPuntosDobles = 0.0f;
     float duracionVelocidad = 0.0f;
     bool siguienteDestructor = false;
+    bool animacionLimpieza = false;
+    float tiempoAnimacionLimpieza = 0.0f;
+    bool filasAEliminar[20] = { false };
 public:
     MenuJuego(const string& nombre = "Jugador");
     ~MenuJuego();

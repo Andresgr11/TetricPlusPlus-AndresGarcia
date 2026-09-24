@@ -3,6 +3,7 @@
 #include <vector>
 #include <fstream>
 #include <iostream>
+#include <random>
 
 using namespace std;
 
@@ -27,4 +28,5 @@ public:
     void bubbleSort(vector<RegistroPuntaje>& lista);
     void quickSort(vector<RegistroPuntaje>& lista);
     vector<RegistroPuntaje> obtenerTop10(AlgoritmoOrdenamiento algoritmo = AlgoritmoOrdenamiento::QuickSort);
+    void generarPuntajesAleatorios(int cantidad);
 };

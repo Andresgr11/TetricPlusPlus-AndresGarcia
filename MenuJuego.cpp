@@ -155,6 +155,24 @@ void MenuJuego::actualizar()
 
     float dt = relojCaida.restart().asSeconds();
 
+    if (animacionLimpieza) {
+        tiempoAnimacionLimpieza -= dt;
+        if (tiempoAnimacionLimpieza <= 0.0f) {
+            for (int i = 0; i < 20; i++) {
+                if (filasAEliminar[i]) {
+                    tablero.eliminarEn(i);
+                    tablero.insertarInicio(new FilaBloques());
+                    puntos += 100 * multiplicadorPuntos;
+                    filasAEliminar[i] = false;
+                }
+            }
+            puntaje.setString("Puntaje: " + to_string(puntos));
+            animacionLimpieza = false;
+            registrarEstado();
+        }
+        return;
+    }
+
     if (tiempoMensajeEvento > 0.0f) {
         tiempoMensajeEvento -= dt;
     }
@@ -243,6 +261,17 @@ void MenuJuego::dibujar(RenderWindow & ventana)
         }
     }
 
+    if (animacionLimpieza) {
+        for (int i = 0; i < 20; i++) {
+            if (filasAEliminar[i]) {
+                RectangleShape destello({ 10.0f * tamanoBloque, tamanoBloque });
+                destello.setPosition({ posXInicial, posYInicial + i * tamanoBloque });
+                destello.setFillColor(Color(255, 255, 255, 220));
+                ventana.draw(destello);
+            }
+        }
+    }
+
     if (piezaActual != nullptr) {
         float px = posXInicial + piezaGridX * tamanoBloque;
         float py = posYInicial + piezaGridY * tamanoBloque;
@@ -289,14 +318,17 @@ void MenuJuego::fijarPieza()
     delete piezaActual;
 
     if (bomba) {
-        for (int y = 19; y >= 0; y--) {
+        bool hayFilas = false;
+        for (int y = 0; y < 20; y++) {
             if (filasDestruidasPorBomba[y]) {
-                tablero.eliminarEn(y);
-                tablero.insertarInicio(new FilaBloques());
-                puntos += 100 * multiplicadorPuntos;
+                filasAEliminar[y] = true;
+                hayFilas = true;
             }
         }
-        puntaje.setString("Puntaje: " + to_string(puntos));
+        if (hayFilas) {
+            animacionLimpieza = true;
+            tiempoAnimacionLimpieza = 0.25f;
+        }
         mostrarMensaje("Destruccion masiva!");
     }
     else {
@@ -329,14 +361,18 @@ void MenuJuego::fijarPieza()
 
 void MenuJuego::limpiarFilas()
 {
+    bool filasCompletas = false;
     for (int i = 0; i < tablero.tamano(); i++) {
         FilaBloques* fila = tablero.obtenerEn(i);
         if (fila && fila->filaLlena()) {
-            tablero.eliminarEn(i);
-            tablero.insertarInicio(new FilaBloques());
-            puntos += 100 * multiplicadorPuntos;
-            puntaje.setString("Puntaje: " + to_string(puntos));
+            filasAEliminar[i] = true;
+            filasCompletas = true;
         }
+    }
+
+    if (filasCompletas) {
+        animacionLimpieza = true;
+        tiempoAnimacionLimpieza = 0.25f;
     }
 }
 

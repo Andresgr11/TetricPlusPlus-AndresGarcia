@@ -48,7 +48,38 @@ MenuPuntajes::MenuPuntajes()
     txtSalir.setPosition({ 500.0f, 690.0f });
 }
 
+void MenuPuntajes::medirTiemposReales() {
+    vector<RegistroPuntaje> datosBase = gestor.cargarPuntajes();
+
+    if (datosBase.empty()) {
+        cout << "[BENCHMARK] El archivo de puntajes está vacío o no se pudo abrir." << endl;
+        return;
+    }
+
+    vector<RegistroPuntaje> datosBubble = datosBase;
+    vector<RegistroPuntaje> datosQuick = datosBase;
+
+    auto inicioBubble = chrono::high_resolution_clock::now();
+    gestor.bubbleSort(datosBubble);
+    auto finBubble = chrono::high_resolution_clock::now();
+    auto duracionBubbleUs = chrono::duration_cast<chrono::microseconds>(finBubble - inicioBubble).count();
+
+    auto inicioQuick = chrono::high_resolution_clock::now();
+    gestor.quickSort(datosQuick);
+    auto finQuick = chrono::high_resolution_clock::now();
+    auto duracionQuickUs = chrono::duration_cast<chrono::microseconds>(finQuick - inicioQuick).count();
+
+    cout << "\n==========================================================" << endl;
+    cout << "  TIEMPOS DE EJECUCION (Datos reales: " << datosBase.size() << " registros)" << endl;
+    cout << "==========================================================" << endl;
+    cout << " -> BubbleSort : " << duracionBubbleUs / 1000.0 << " ms" << endl;
+    cout << " -> QuickSort  : " << duracionQuickUs / 1000.0 << " ms" << endl;
+    cout << "==========================================================\n" << endl;
+}
+
 void MenuPuntajes::cargarYMostrarPuntajes(AlgoritmoOrdenamiento algoritmo) {
+    medirTiemposReales();
+
     vector<RegistroPuntaje> top10 = gestor.obtenerTop10(algoritmo);
 
     if (algoritmo == AlgoritmoOrdenamiento::BubbleSort) {
